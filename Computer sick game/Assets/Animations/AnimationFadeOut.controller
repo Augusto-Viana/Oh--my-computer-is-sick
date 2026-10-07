@@ -46,7 +46,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -57,7 +57,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AnimationTransicao
+  m_Name: AnimationFadeOut
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: FadeOut
@@ -120,7 +120,7 @@ AnimatorStateMachine:
     m_Position: {x: 350, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2044460800179086264}
-    m_Position: {x: 350, y: 210, z: 0}
+    m_Position: {x: 340, y: 210, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

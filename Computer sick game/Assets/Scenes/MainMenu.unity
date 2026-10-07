@@ -548,7 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Transicao: {fileID: 1411951709}
-  AnimationTransicao: {fileID: 1411951710}
+  AnimationFadeOut: {fileID: 1411951710}
   duracaoTransicao: 1
   PlaySound: {fileID: 851129115}
 --- !u!4 &225678191

@@ -19,6 +19,10 @@ public class Plot : MonoBehaviour {
     }
 
     private void OnMouseEnter() {
+        if (PauseManager.main.IsPaused) {
+            return;
+        }
+
         sr.color = hoverColor;
     }
 
@@ -27,43 +31,44 @@ public class Plot : MonoBehaviour {
     }
 
     private void OnMouseDown() {
+        if (PauseManager.main.IsPaused) {
+            return;
+        }
+
         if (UIManager.main.IsHoveringUI())
             return;
 
         if (towerOBJ != null) {
 
             // Se existe um AMV_Manager nessa torre, abre a UI dele
-            if (AMV != null)
-            {
+            if (AMV != null) {
                 if (AMV.AMVLevel < 3)
                     AMV.OpenUpgradeUI();
                 return;
             }
 
             // Se existe um BYTE_Manager nessa torre, abre a UI dele
-            if (BYTE != null)
-            {
+            if (BYTE != null) {
                 if (BYTE.BYTELevel < 3)
                     BYTE.OpenUpgradeUI();
                 return;
             }
 
             // Se existe um FIREWALL_Manager nessa torre, abre a UI dele
-            if (FIREWALL != null)
-            {
+            if (FIREWALL != null) {
                 if (FIREWALL.FIREWALLLevel < 3)
                     FIREWALL.OpenUpgradeUI();
                 return;
             }
 
             return;
-        };
+        }
+        ;
 
         Tower towerToBuild = BuildManager.main.GetSelectedTower();
 
-        if (towerToBuild.cost > LevelManager.main.money)
-        {
-            Debug.Log("Voc� n�o tem dinheiro para comprar isso");
+        if (towerToBuild.cost > LevelManager.main.money) {
+            Debug.Log("Você não tem dinheiro para comprar isso");
             return;
         }
 
