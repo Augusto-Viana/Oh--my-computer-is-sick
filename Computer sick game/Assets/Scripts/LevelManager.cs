@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour {
     }
 
     private void Start() {
-        money = 999999999;
+        money = 50;
         life = 30;
         wave = 1;
     }
@@ -34,5 +34,14 @@ public class LevelManager : MonoBehaviour {
             return false;
         }
 
+    }
+
+    public void DecreaseLife(int amount) {
+        life -= amount;
+
+        if (life <= 0) {
+            life = 0;
+            GameOverManager.main.GameOver();
+        }
     }
 }

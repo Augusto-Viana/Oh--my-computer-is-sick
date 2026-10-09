@@ -248,7 +248,8 @@ MonoBehaviour:
     m_Bits: 64
   anim: {fileID: 6418045419384190026}
   areaObject: {fileID: 3438582522656507606}
-  damageRange: 2.8
-  damagePerSecond: 1.5
+  damageRange: 2.5
+  damagePerSecond: 2.1
+  slowAmount: 0.35
   checkInterval: 0.2
   lingerTimeNoEnemies: 0.1

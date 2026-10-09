@@ -253,7 +253,15 @@ MonoBehaviour:
   anim: {fileID: 8557804782401175995}
   targetingRange: 4.5
   rotationSpeed: 1
-  bps: 1.9
+  bps: 4
+  bulletDamage: 50
+  burstAnimation: 0
+  visualShotsPerCycle: 1
+  burstAnimationState: BYTE1
+  burstAnimationClip: BYTE1
+  firstBurstShotFrame: 5
+  lastBurstShotFrame: 5
+  burstAnimationLastFrame: 5
 --- !u!1 &6289917371088000668
 GameObject:
   m_ObjectHideFlags: 0

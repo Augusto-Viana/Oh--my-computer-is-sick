@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2662117209480400768}
   - component: {fileID: 1012148257070231347}
   m_Layer: 6
-  m_Name: R.A.I.D.E.R_0
+  m_Name: R.A.I.D.E.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,9 +199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4daa80492ebd4e341adff62b6afd5096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 1500
-  moneyWorth: 1
-  Damage: 50
+  hitPoints: 7500
+  moneyWorth: 20000
+  Damage: 250
 --- !u!114 &1012148257070231347
 MonoBehaviour:
   m_ObjectHideFlags: 0

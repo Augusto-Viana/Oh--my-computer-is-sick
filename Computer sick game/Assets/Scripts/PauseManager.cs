@@ -6,6 +6,9 @@ public class PauseManager : MonoBehaviour {
     public static PauseManager main;
 
     public AudioSource music;
+    private float gameSpeed = 1f;
+    private readonly float[] speedStates = { 1f, 2f, 3f, 5f };
+    private int speedIndex = 0;
 
     [SerializeField] private GameObject pausePanel;
     [SerializeField] public GameObject FadePanel;
@@ -33,6 +36,10 @@ public class PauseManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             TogglePause();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && !IsPaused) {
+            ChangeGameSpeed();
+        }
     }
 
     private void TogglePause() {
@@ -48,6 +55,14 @@ public class PauseManager : MonoBehaviour {
             return;
         }
 
+        if (VictoryManager.main.IsVictory) {
+            return;
+        }
+
+        if (GameOverManager.main.IsGameOver) {
+            return;
+        }
+
         IsPaused = true;
         Time.timeScale = 0f;
         music.Pause();
@@ -60,7 +75,7 @@ public class PauseManager : MonoBehaviour {
         }
 
         IsPaused = false;
-        Time.timeScale = 1f;
+        Time.timeScale = gameSpeed;
         music.UnPause();
         pausePanel.SetActive(false);
     }
@@ -104,7 +119,7 @@ public class PauseManager : MonoBehaviour {
         SceneManager.LoadScene(sceneName);
     }
 
-private IEnumerator PlayFadeOut() {
+    private IEnumerator PlayFadeOut() {
         isTransitioning = true;
 
         // Verifica se o painel foi associado.
@@ -135,5 +150,18 @@ private IEnumerator PlayFadeOut() {
         AnimationFadeOut.SetTrigger("FadeOut");
 
         yield return new WaitForSecondsRealtime(fadeDuration);
+    }
+
+    private void ChangeGameSpeed() {
+        speedIndex++;
+
+        if (speedIndex >= speedStates.Length) {
+            speedIndex = 0;
+        }
+
+        gameSpeed = speedStates[speedIndex];
+        Time.timeScale = gameSpeed;
+
+        Debug.Log("Velocidade do jogo: " + gameSpeed + "x");
     }
 }

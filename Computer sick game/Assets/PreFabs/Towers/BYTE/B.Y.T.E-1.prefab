@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3549683252230872293}
   - component: {fileID: 3163675854010494927}
   m_Layer: 0
-  m_Name: Firewall-missiles-launcher_0
+  m_Name: BYTE-missiles-launcher_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,9 +218,17 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2495102925770135169, guid: aa72d7b67bd2cd94bacdd708a10f6a9b, type: 3}
   firingPoint: {fileID: 5006441322736845932}
   anim: {fileID: 3163675854010494927}
-  targetingRange: 3
+  targetingRange: 5
   rotationSpeed: 1
-  bps: 1
+  bps: 0.1
+  bulletDamage: 60
+  burstAnimation: 1
+  visualShotsPerCycle: 1
+  burstAnimationState: BYTE1
+  burstAnimationClip: BYTE1
+  firstBurstShotFrame: 2
+  lastBurstShotFrame: 2
+  burstAnimationLastFrame: 3
 --- !u!1 &5745488020104566543
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_Movement : MonoBehaviour
-{
+public class Enemy_Movement : MonoBehaviour {
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
 
@@ -10,11 +10,11 @@ public class Enemy_Movement : MonoBehaviour
 
     [Header("Rotation Settings")]
     [SerializeField]
-    private float rotationSpeed = 180f; //velocidade que o inimigo gira
+    private float rotationSpeed = 360f; // velocidade que o inimigo gira
 
-    private ForwardAxis forwardAxis = ForwardAxis.Up; //aqui define a direção que é a frente do inimigo
+    private ForwardAxis forwardAxis = ForwardAxis.Up;
 
-    private bool initialFaceOnStart = true; //aponta para o primeiro ponto de path caso for verdadeiro
+    private bool initialFaceOnStart = true;
 
     private enum ForwardAxis { Up }
 
@@ -27,14 +27,15 @@ public class Enemy_Movement : MonoBehaviour
 
     private bool shouldRotate = false;
 
-    private void Start()
-    {
+    // Firewalls que estão atualmente aplicando slow
+    private Dictionary<FIREWALL, float> activeSlows = new Dictionary<FIREWALL, float>();
+
+    private void Start() {
         target = LevelManager.main.path[pathIndex];
 
-        string enemyName = gameObject.name.ToLower(); 
+        string enemyName = gameObject.name.ToLower();
 
-        if (enemyName.Contains("malware") || enemyName.Contains("maniacware"))
-        {
+        if (enemyName.Contains("malware") || enemyName.Contains("maniacware")) {
             shouldRotate = true;
         }
 
@@ -42,34 +43,25 @@ public class Enemy_Movement : MonoBehaviour
             UpdateTargetRotation(target.position, instant: true);
     }
 
-    private void Update()
-    {
-        if (Vector2.Distance(transform.position, target.position) <= 0.1f)
-        {
+    private void Update() {
+        if (Vector2.Distance(transform.position, target.position) <= 0.1f) {
             pathIndex++;
 
-            if (pathIndex == LevelManager.main.path.Length)
-            {
+            if (pathIndex == LevelManager.main.path.Length) {
                 Health_LB1 health = GetComponent<Health_LB1>();
-                LevelManager.main.life -= health != null ? health.Damage : 1;
+
+                int damage = health != null ? health.Damage : 1;
+
+                LevelManager.main.DecreaseLife(damage);
+
                 EnemySpawner.onEnemyDestroy.Invoke();
                 Destroy(gameObject);
                 return;
-            }
-            else
-            {
+            } else {
                 target = LevelManager.main.path[pathIndex];
 
                 if (shouldRotate && target != null)
                     UpdateTargetRotation(target.position, instant: false);
-            }
-
-            if (LevelManager.main.life <= 0)
-            {
-                LevelManager.main.life = 0;
-                LevelManager.main.money = 0;
-                Debug.Log("Game Over!");
-                Destroy(gameObject);
             }
         }
 
@@ -77,43 +69,84 @@ public class Enemy_Movement : MonoBehaviour
             SmoothRotateTowardsTarget();
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         Vector2 direction = (target.position - transform.position).normalized;
-        rb.linearVelocity = direction * moveSpeed;
+
+        float highestSlow = GetHighestSlow();
+        float effectiveSpeed = moveSpeed * (1f - highestSlow);
+
+        rb.linearVelocity = direction * effectiveSpeed;
     }
 
-    private void UpdateTargetRotation(Vector3 worldPos, bool instant)
-    {
+    // Adiciona ou atualiza o slow de uma Firewall específica
+    public void ApplySlow(FIREWALL firewall, float slowAmount) {
+        if (firewall == null)
+            return;
+
+        activeSlows[firewall] = slowAmount;
+    }
+
+    // Remove o slow de uma Firewall específica
+    public void RemoveSlow(FIREWALL firewall) {
+        if (firewall == null)
+            return;
+
+        activeSlows.Remove(firewall);
+    }
+
+    // Retorna o maior slow atualmente aplicado
+    private float GetHighestSlow() {
+        float highestSlow = 0f;
+
+        foreach (float slow in activeSlows.Values) {
+            if (slow > highestSlow)
+                highestSlow = slow;
+        }
+
+        return highestSlow;
+    }
+
+    private void UpdateTargetRotation(Vector3 worldPos, bool instant) {
         Vector2 dir = (worldPos - transform.position);
-        if (dir.sqrMagnitude <= Mathf.Epsilon) return;
+
+        if (dir.sqrMagnitude <= Mathf.Epsilon)
+            return;
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
         if (forwardAxis == ForwardAxis.Up)
             angle -= 90f;
 
         targetAngle = angle;
         rotatingToNewTarget = true;
 
-        if (instant)
-        {
+        if (instant) {
             SetRotation(angle);
             rotatingToNewTarget = false;
         }
     }
 
-    private void SmoothRotateTowardsTarget()
-    {
+    private void SmoothRotateTowardsTarget() {
         float currentAngle = rb != null ? rb.rotation : transform.eulerAngles.z;
-        float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
+
+        float highestSlow = GetHighestSlow();
+        float effectiveSpeed = moveSpeed * (1f - highestSlow);
+
+        float rotationMultiplier = effectiveSpeed / moveSpeed;
+
+        float newAngle = Mathf.MoveTowardsAngle(
+            currentAngle,
+            targetAngle,
+            rotationSpeed * rotationMultiplier * Time.deltaTime
+        );
+
         SetRotation(newAngle);
 
         if (Mathf.Abs(Mathf.DeltaAngle(newAngle, targetAngle)) < 0.5f)
             rotatingToNewTarget = false;
     }
 
-    private void SetRotation(float angle)
-    {
+    private void SetRotation(float angle) {
         if (rb != null)
             rb.rotation = angle;
         else

@@ -23,6 +23,14 @@ public class Plot : MonoBehaviour {
             return;
         }
 
+        if (VictoryManager.main.IsVictory) {
+            return;
+        }
+
+        if (GameOverManager.main.IsGameOver) {
+            return;
+        }
+
         sr.color = hoverColor;
     }
 
@@ -31,6 +39,14 @@ public class Plot : MonoBehaviour {
     }
 
     private void OnMouseDown() {
+        if (GameOverManager.main.IsGameOver) {
+            return;
+        }
+
+        if (VictoryManager.main.IsVictory) {
+            return;
+        }
+
         if (PauseManager.main.IsPaused) {
             return;
         }

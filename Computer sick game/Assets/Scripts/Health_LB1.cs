@@ -9,7 +9,7 @@ public class Health_LB1 : MonoBehaviour
     public int Damage = 1;
 
     private bool isDestroyed = false;
-    public void takeDamage(int dmg) {
+    public void takeDamage(double dmg) {
         hitPoints -= dmg;
 
         if (hitPoints <= 0 && !isDestroyed) {

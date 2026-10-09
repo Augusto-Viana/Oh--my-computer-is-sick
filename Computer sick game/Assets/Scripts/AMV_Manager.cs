@@ -1,33 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AMV_Manager : MonoBehaviour
-{
+public class AMV_Manager : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private GameObject upgradeUI; 
-    [SerializeField] private Button upgradeButton; 
+    [SerializeField] private GameObject upgradeUI;
+    [SerializeField] private Button upgradeButton;
     [SerializeField] private TMPro.TextMeshProUGUI costUI;
 
 
     [Header("Prefabs da AMV")]
-    [SerializeField] private GameObject AMV1;    
-    [SerializeField] private GameObject AMV2;  
-    [SerializeField] private GameObject AMV3;     
+    [SerializeField] private GameObject AMV1;
+    [SerializeField] private GameObject AMV2;
+    [SerializeField] private GameObject AMV3;
 
     private GameObject currentAMVInstance;
     public int AMVLevel = 1;
 
     //Fazer o custo de AMV ser maior a cada nível
-    private int AMVPrice
-    {
-        get
-        {
-            switch (AMVLevel)
-            {
+    private int AMVPrice {
+        get {
+            switch (AMVLevel) {
                 case 1:
-                    return 150;
+                    return 100;
                 case 2:
-                    return 250;
+                    return 200;
                 default:
                     return 0;
             }
@@ -37,8 +33,7 @@ public class AMV_Manager : MonoBehaviour
     private enum AMVStage { AMV1, AMV2, AMV3 }
     private AMVStage currentStage = AMVStage.AMV1;
 
-    private void Start()
-    {
+    private void Start() {
         currentAMVInstance = Instantiate(AMV1, transform.position, Quaternion.identity, transform);
         currentStage = AMVStage.AMV1;
 
@@ -49,14 +44,12 @@ public class AMV_Manager : MonoBehaviour
     }
 
 
-    public void OpenUpgradeUI()
-    {
+    public void OpenUpgradeUI() {
         upgradeUI.SetActive(true);
         UpdateCostText();
     }
 
-    public void CloseUpgradeUI()
-    {
+    public void CloseUpgradeUI() {
         upgradeUI.SetActive(false);
     }
 
@@ -68,15 +61,13 @@ public class AMV_Manager : MonoBehaviour
         LevelManager.main.SpendMoney(AMVPrice);
         AMVLevel++;
 
-        if (currentAMVInstance != null)
-        {
+        if (currentAMVInstance != null) {
             Destroy(currentAMVInstance);
             currentAMVInstance = null;
         }
 
 
-        switch (AMVLevel)
-        {
+        switch (AMVLevel) {
             case 2:
                 currentAMVInstance = Instantiate(AMV2, transform.position, Quaternion.identity, transform);
                 currentStage = AMVStage.AMV2;
@@ -90,8 +81,7 @@ public class AMV_Manager : MonoBehaviour
         UpdateCostText();
     }
 
-    private void UpdateCostText()
-    {
+    private void UpdateCostText() {
         if (costUI != null)
             costUI.text = AMVPrice.ToString();
     }

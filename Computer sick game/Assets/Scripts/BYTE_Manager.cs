@@ -1,33 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BYTE_Manager : MonoBehaviour
-{
+public class BYTE_Manager : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private GameObject upgradeUI; 
-    [SerializeField] private Button upgradeButton; 
+    [SerializeField] private GameObject upgradeUI;
+    [SerializeField] private Button upgradeButton;
     [SerializeField] private TMPro.TextMeshProUGUI costUI;
 
 
     [Header("Prefabs da BYTE")]
-    [SerializeField] private GameObject BYTE1;    
-    [SerializeField] private GameObject BYTE2;  
-    [SerializeField] private GameObject BYTE3;     
+    [SerializeField] private GameObject BYTE1;
+    [SerializeField] private GameObject BYTE2;
+    [SerializeField] private GameObject BYTE3;
 
     private GameObject currentBYTEInstance;
     public int BYTELevel = 1;
 
     //Fazer o custo de BYTE ser maior a cada nível
-    private int BYTEPrice
-    {
-        get
-        {
-            switch (BYTELevel)
-            {
+    private int BYTEPrice {
+        get {
+            switch (BYTELevel) {
                 case 1:
-                    return 300;
+                    return 800;
                 case 2:
-                    return 450;
+                    return 1600;
                 default:
                     return 0;
             }
@@ -37,8 +33,7 @@ public class BYTE_Manager : MonoBehaviour
     private enum BYTEStage { BYTE1, BYTE2, BYTE3 }
     private BYTEStage currentStage = BYTEStage.BYTE1;
 
-    private void Start()
-    {
+    private void Start() {
         currentBYTEInstance = Instantiate(BYTE1, transform.position, Quaternion.identity, transform);
         currentStage = BYTEStage.BYTE1;
 
@@ -49,14 +44,12 @@ public class BYTE_Manager : MonoBehaviour
     }
 
 
-    public void OpenUpgradeUI()
-    {
+    public void OpenUpgradeUI() {
         upgradeUI.SetActive(true);
         UpdateCostText();
     }
 
-    public void CloseUpgradeUI()
-    {
+    public void CloseUpgradeUI() {
         upgradeUI.SetActive(false);
     }
 
@@ -70,15 +63,13 @@ public class BYTE_Manager : MonoBehaviour
         LevelManager.main.SpendMoney(BYTEPrice);
         BYTELevel++;
 
-        if (currentBYTEInstance != null)
-        {
+        if (currentBYTEInstance != null) {
             Destroy(currentBYTEInstance);
             currentBYTEInstance = null;
         }
 
 
-        switch (BYTELevel)
-        {
+        switch (BYTELevel) {
             case 2:
                 currentBYTEInstance = Instantiate(BYTE2, transform.position, Quaternion.identity, transform);
                 currentStage = BYTEStage.BYTE2;
@@ -92,8 +83,7 @@ public class BYTE_Manager : MonoBehaviour
         UpdateCostText();
     }
 
-    private void UpdateCostText()
-    {
+    private void UpdateCostText() {
         if (costUI != null)
             costUI.text = BYTEPrice.ToString();
     }

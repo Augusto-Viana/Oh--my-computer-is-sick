@@ -1,33 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FIREWALL_Manager : MonoBehaviour
-{
+public class FIREWALL_Manager : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private GameObject upgradeUI; 
-    [SerializeField] private Button upgradeButton; 
+    [SerializeField] private GameObject upgradeUI;
+    [SerializeField] private Button upgradeButton;
     [SerializeField] private TMPro.TextMeshProUGUI costUI;
 
 
     [Header("Prefabs da FIREWALL")]
-    [SerializeField] private GameObject FIREWALL1;    
-    [SerializeField] private GameObject FIREWALL2;  
-    [SerializeField] private GameObject FIREWALL3;     
+    [SerializeField] private GameObject FIREWALL1;
+    [SerializeField] private GameObject FIREWALL2;
+    [SerializeField] private GameObject FIREWALL3;
 
     private GameObject currentFIREWALLInstance;
     public int FIREWALLLevel = 1;
 
     //Fazer o custo de FIREWALL ser maior a cada nível
-    private int FIREWALLPrice
-    {
-        get
-        {
-            switch (FIREWALLLevel)
-            {
+    private int FIREWALLPrice {
+        get {
+            switch (FIREWALLLevel) {
                 case 1:
-                    return 600;
+                    return 200;
                 case 2:
-                    return 850;
+                    return 300;
                 default:
                     return 0;
             }
@@ -37,8 +33,7 @@ public class FIREWALL_Manager : MonoBehaviour
     private enum FIREWALLStage { FIREWALL1, FIREWALL2, FIREWALL3 }
     private FIREWALLStage currentStage = FIREWALLStage.FIREWALL1;
 
-    private void Start()
-    {
+    private void Start() {
         currentFIREWALLInstance = Instantiate(FIREWALL1, transform.position, Quaternion.identity, transform);
         currentStage = FIREWALLStage.FIREWALL1;
 
@@ -49,14 +44,12 @@ public class FIREWALL_Manager : MonoBehaviour
     }
 
 
-    public void OpenUpgradeUI()
-    {
+    public void OpenUpgradeUI() {
         upgradeUI.SetActive(true);
         UpdateCostText();
     }
 
-    public void CloseUpgradeUI()
-    {
+    public void CloseUpgradeUI() {
         upgradeUI.SetActive(false);
     }
 
@@ -68,15 +61,13 @@ public class FIREWALL_Manager : MonoBehaviour
         LevelManager.main.SpendMoney(FIREWALLPrice);
         FIREWALLLevel++;
 
-        if (currentFIREWALLInstance != null)
-        {
+        if (currentFIREWALLInstance != null) {
             Destroy(currentFIREWALLInstance);
             currentFIREWALLInstance = null;
         }
 
 
-        switch (FIREWALLLevel)
-        {
+        switch (FIREWALLLevel) {
             case 2:
                 currentFIREWALLInstance = Instantiate(FIREWALL2, transform.position, Quaternion.identity, transform);
                 currentStage = FIREWALLStage.FIREWALL2;
@@ -90,8 +81,7 @@ public class FIREWALL_Manager : MonoBehaviour
         UpdateCostText();
     }
 
-    private void UpdateCostText()
-    {
+    private void UpdateCostText() {
         if (costUI != null)
             costUI.text = FIREWALLPrice.ToString();
     }

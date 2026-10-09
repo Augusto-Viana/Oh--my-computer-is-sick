@@ -1,8 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Menu : MonoBehaviour
-{
+public class Menu : MonoBehaviour {
     [Header("References")]
     [SerializeField] TextMeshProUGUI moneyUI;
     [SerializeField] TextMeshProUGUI lifeUI;
@@ -11,15 +10,13 @@ public class Menu : MonoBehaviour
 
     private bool isMenuOpen = false;
 
-    public void ToggleMenu()
-    {
+    public void ToggleMenu() {
         isMenuOpen = !isMenuOpen;
         anim.SetBool("MenuOpen", isMenuOpen);
-    
+
     }
 
-    private void OnGUI()
-    {
+    private void OnGUI() {
         moneyUI.text = LevelManager.main.money.ToString();
         lifeUI.text = LevelManager.main.life.ToString();
         WaveUI.text = ($"{LevelManager.main.wave.ToString()}/50");

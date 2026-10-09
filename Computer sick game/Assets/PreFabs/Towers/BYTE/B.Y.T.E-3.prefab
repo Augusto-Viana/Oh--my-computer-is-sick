@@ -141,9 +141,17 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2495102925770135169, guid: aa72d7b67bd2cd94bacdd708a10f6a9b, type: 3}
   firingPoint: {fileID: 3508297419377068270}
   anim: {fileID: 8119210499648520962}
-  targetingRange: 5.5
+  targetingRange: 6
   rotationSpeed: 1
-  bps: 1
+  bps: 0.3
+  bulletDamage: 140
+  burstAnimation: 1
+  visualShotsPerCycle: 9
+  burstAnimationState: BYTE3
+  burstAnimationClip: BYTE3
+  firstBurstShotFrame: 2
+  lastBurstShotFrame: 10
+  burstAnimationLastFrame: 12
 --- !u!1 &2669338120231378039
 GameObject:
   m_ObjectHideFlags: 0

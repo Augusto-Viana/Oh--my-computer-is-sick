@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class Life : MonoBehaviour
-{
+public class Life : MonoBehaviour {
     [Header("Prefabs do Coração")]
     [SerializeField] private GameObject fullHeartPrefab;    // 30�21
     [SerializeField] private GameObject mediumHeartPrefab;  // 20�11
@@ -16,27 +15,23 @@ public class Life : MonoBehaviour
 
     private int lastLife = -1; // para detectar mudan�as na vida
 
-    private void Start()
-    {
+    private void Start() {
         UpdateHeartPrefab(true); // for�a o primeiro cora��o ao iniciar
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (LevelManager.main == null) return;
 
         int life = LevelManager.main.life;
 
         // S� atualiza se a vida mudou desde o �ltimo frame
-        if (life != lastLife)
-        {
+        if (life != lastLife) {
             lastLife = life;
             UpdateHeartPrefab();
         }
     }
 
-    private void UpdateHeartPrefab(bool forceInstantiate = false)
-    {
+    private void UpdateHeartPrefab(bool forceInstantiate = false) {
         int life = LevelManager.main.life;
         HeartStage newStage = DetermineStageForLife(life);
 
@@ -46,8 +41,7 @@ public class Life : MonoBehaviour
         currentStage = newStage;
 
         // Destroi o cora��o antigo, se existir
-        if (currentHeartInstance != null)
-        {
+        if (currentHeartInstance != null) {
             Destroy(currentHeartInstance);
             currentHeartInstance = null;
         }
@@ -55,8 +49,7 @@ public class Life : MonoBehaviour
         // Escolhe o prefab certo de acordo com a vida
         GameObject prefabToSpawn = GetPrefabForStage(currentStage);
 
-        if (prefabToSpawn == null)
-        {
+        if (prefabToSpawn == null) {
             Debug.LogWarning($"HeartManager: prefab para {currentStage} n�o atribu�do.");
             return;
         }
@@ -68,8 +61,7 @@ public class Life : MonoBehaviour
         currentHeartInstance.transform.localScale = Vector3.one;
     }
 
-    private HeartStage DetermineStageForLife(int life)
-    {
+    private HeartStage DetermineStageForLife(int life) {
         if (life > 20)
             return HeartStage.Full;      // 30�21
         else if (life > 10)
@@ -80,10 +72,8 @@ public class Life : MonoBehaviour
             return HeartStage.Broken;    // 0
     }
 
-    private GameObject GetPrefabForStage(HeartStage stage)
-    {
-        switch (stage)
-        {
+    private GameObject GetPrefabForStage(HeartStage stage) {
+        switch (stage) {
             case HeartStage.Full: return fullHeartPrefab;
             case HeartStage.Medium: return mediumHeartPrefab;
             case HeartStage.Low: return lowHeartPrefab;
